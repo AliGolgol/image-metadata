@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.up42.imagemetadata.domain.FeatureRepository;
+import com.up42.imagemetadata.domain.exceptions.FeatureException;
 import com.up42.imagemetadata.domain.models.Feature;
 import com.up42.imagemetadata.domain.models.SourceData;
 import org.junit.jupiter.api.Test;
@@ -21,8 +22,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static java.util.Optional.*;
+import static java.util.Optional.of;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(value = SpringExtension.class)
@@ -43,7 +45,18 @@ public class GetFeaturesQueryServiceTest {
         assertThat(featureList.size()).isGreaterThan(0);
     }
 
-    private  Optional<List<Feature>> getAll() throws FileNotFoundException {
+    @Test
+    void should_throws_FeatureException_when_list_is_empty() {
+        Optional<List<Feature>> features = Optional.empty();
+        when(repository.getAll()).thenReturn(features);
+        FeatureException featureException = assertThrows(FeatureException.class,
+                () -> queryService.getFeatures(),
+                "There is not any feature!");
+
+        assertThat(featureException.getMessage()).contains("There is not any feature!");
+    }
+
+    private Optional<List<Feature>> getAll() throws FileNotFoundException {
         Gson gson = new Gson();
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
         String geoJsonFile = Objects.requireNonNull(classloader.getResource("source-data.txt")).getFile();

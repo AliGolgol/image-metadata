@@ -1,6 +1,8 @@
 package com.up42.imagemetadata.application.queryservices;
 
 import com.up42.imagemetadata.domain.FeatureRepository;
+import com.up42.imagemetadata.domain.exceptions.ErrorCode;
+import com.up42.imagemetadata.domain.exceptions.FeatureException;
 import com.up42.imagemetadata.domain.models.Feature;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,8 @@ public class GetFeaturesQueryService {
      * @return a {@link List<Feature>}
      */
     public List<Feature> getFeatures() {
-        return featureRepository.getAll().get();
+        return featureRepository.getAll()
+                .orElseThrow(() ->
+                        new FeatureException(ErrorCode.FEATURE_NOT_FOUND, null, "There is not any feature!"));
     }
 }
