@@ -3,7 +3,6 @@ package com.up42.imagemetadata.domain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -29,10 +28,9 @@ public class QuickLookTest {
 
     private String getQuickLook() throws FileNotFoundException {
         FileInputStream fis = new FileInputStream("src/test/resources/quicklook.txt");
-        String image = new BufferedReader(
+        return new BufferedReader(
                 new InputStreamReader(fis, StandardCharsets.UTF_8))
                 .lines()
                 .collect(Collectors.joining());
-        return image;
     }
 }
