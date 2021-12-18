@@ -21,7 +21,7 @@ public class ConfigTest {
 
     @Test
     void should_returns_source_data_json() {
-        Optional<List<SourceData>> sourceData = config.getFeatures();
+        Optional<List<SourceData>> sourceData = config.getSourceData();
 
         assertThat(sourceData.get().size()).isGreaterThan(0);
     }

@@ -23,7 +23,7 @@ import static java.util.Optional.of;
 @Log4j2
 public class Config {
     private final ResourceLoader resourceLoader;
-    private Optional<List<SourceData>> features;
+    private Optional<List<SourceData>> sourceData;
     Gson gson;
 
     public Config(ResourceLoader resourceLoader) {
@@ -33,10 +33,10 @@ public class Config {
     }
 
     /**
-     * @return {@link List< Feature >} which is optional
+     * @return {@link List<Feature>} which is optional
      */
-    public Optional<List<SourceData>> getFeatures() {
-        return features;
+    public Optional<List<SourceData>> getSourceData() {
+        return sourceData;
     }
 
     /**
@@ -44,7 +44,7 @@ public class Config {
      */
     private void readSourceData() {
         try {
-            features = of(List.of(gson.fromJson(readJson().toString(), SourceData[].class)));
+            sourceData = of(List.of(gson.fromJson(readJson().toString(), SourceData[].class)));
         } catch (IOException e) {
             log.info(e.getMessage());
         }
@@ -52,12 +52,12 @@ public class Config {
 
     /**
      * @return a {@link JsonElement} which includes Features.
-     *
      * @throws IOException when the file not found.
      */
     private JsonElement readJson() throws IOException {
         String FILE_NAME = "source-data.txt";
         Resource resource = resourceLoader.getResource("classpath:/" + FILE_NAME);
         InputStream inputStream = resource.getInputStream();
-        return JsonParser.parseReader(new InputStreamReader(inputStream, UTF_8));    }
+        return JsonParser.parseReader(new InputStreamReader(inputStream, UTF_8));
+    }
 }
