@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.util.Optional.*;
+
 @Repository
 public class FeatureRepositoryImpl implements FeatureRepository {
 
@@ -26,7 +28,7 @@ public class FeatureRepositoryImpl implements FeatureRepository {
      */
     @Override
     public Optional<List<Feature>> getAll() {
-        return Optional.of(config.getSourceData().stream()
+        return of(config.getSourceData().stream()
                 .map(this::getFeatures)
                 .flatMap(List::stream).collect(Collectors.toList()));
     }
@@ -43,8 +45,17 @@ public class FeatureRepositoryImpl implements FeatureRepository {
                 .flatMap(List::stream).collect(Collectors.toList());
     }
 
+    /**
+     * Returns the feature by id.
+     *
+     * @param id is String.
+     * @return a {@link Feature} which is optional.
+     */
     @Override
     public Optional<Feature> getById(String id) {
-        return Optional.empty();
+        if (getAll().isEmpty()) return empty();
+
+        return getAll().get().stream()
+                .filter(f->f.getProperties().getId().equals(id)).findFirst();
     }
 }

@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static java.util.Optional.of;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -37,6 +38,13 @@ public class FeatureRepositoryImplTest {
         assertThat(featureRepository.getAll().get().size()).isGreaterThan(0);
     }
 
+    @Test
+    void should_return_the_feature_by_id() throws FileNotFoundException {
+        when(config.getSourceData()).thenReturn(getAll());
+        assertThat(featureRepository.getById("39c2f29e-c0f8-4a39-a98b-deed547d6aea").get().getProperties().getId())
+                .isEqualTo(getAll().get().get(0).getFeatures().get(0).getProperties().getId());
+    }
+
     private Optional<List<SourceData>> getAll() throws FileNotFoundException {
         Gson gson = new Gson();
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
@@ -44,6 +52,6 @@ public class FeatureRepositoryImplTest {
         JsonElement geoJsonElements = JsonParser.parseReader(new FileReader(geoJsonFile));
         SourceData[] sourceData = gson.fromJson(geoJsonElements.toString(), SourceData[].class);
 
-        return Optional.of(List.of(sourceData));
+        return of(List.of(sourceData));
     }
 }
