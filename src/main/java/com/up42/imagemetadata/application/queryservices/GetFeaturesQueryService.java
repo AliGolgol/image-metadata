@@ -83,7 +83,7 @@ public class GetFeaturesQueryService {
     /**
      * Maps the {@link List<Feature>} to the {@link List<FeatureDTO>}
      * @param features is the {@link List<Feature>}.
-     * @return {@List List<FeatureDTO}
+     * @return {@link List<FeatureDTO}
      */
     private List<FeatureDTO> mapToFeatureDTO(List<Feature> features) {
         return features.stream().map(this::mapToFeatureDTO).collect(Collectors.toList());

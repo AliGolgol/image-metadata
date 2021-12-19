@@ -3,7 +3,6 @@ package com.up42.imagemetadata.application.queryservices;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.up42.imagemetadata.application.dtos.FeatureDTO;
 import com.up42.imagemetadata.domain.FeatureRepository;
 import com.up42.imagemetadata.domain.exceptions.FeatureException;
 import com.up42.imagemetadata.domain.models.Feature;
@@ -92,7 +91,7 @@ public class GetFeaturesQueryServiceTest {
     }
 
     @Test
-    void should_throws_FeatureException_when_the_id_is_not_valid() throws FileNotFoundException {
+    void should_throws_FeatureException_when_the_id_is_not_valid() {
         var featureException = assertThrows(FeatureException.class,
                 () -> queryService.getImageById(""),
                 "The id is not valid!");
