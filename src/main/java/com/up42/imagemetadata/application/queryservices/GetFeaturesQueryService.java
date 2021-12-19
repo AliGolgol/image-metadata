@@ -2,10 +2,10 @@ package com.up42.imagemetadata.application.queryservices;
 
 import com.up42.imagemetadata.application.dtos.FeatureDTO;
 import com.up42.imagemetadata.domain.FeatureRepository;
+import com.up42.imagemetadata.domain.QuickLook;
 import com.up42.imagemetadata.domain.exceptions.ErrorCode;
 import com.up42.imagemetadata.domain.exceptions.FeatureException;
 import com.up42.imagemetadata.domain.models.Feature;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,6 +43,22 @@ public class GetFeaturesQueryService {
                 .findFirst()
                 .orElseThrow(() ->
                         new FeatureException(ErrorCode.FEATURE_NOT_FOUND, id, "The feature not found!"));
+    }
+
+    /**
+     * Returns Byte array which is related to base64 of image
+     *
+     * @param id is String
+     * @return a {@link Byte[]}
+     */
+    public byte[] getImageById(String id) {
+        Feature feature = featureRepository.getById(id).stream()
+                .filter(f -> f.getProperties().getId().equals(id))
+                .findFirst()
+                .orElseThrow(() ->
+                        new FeatureException(ErrorCode.FEATURE_NOT_FOUND, id, "The feature not found!"));
+
+        return new QuickLook(feature.getProperties().getQuicklook()).toByteArray();
     }
 
     /**

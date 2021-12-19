@@ -80,6 +80,17 @@ public class GetFeaturesQueryServiceTest {
                 "The feature not found!");
         assertThat(featureException.getMessage()).contains("The feature not found!");
     }
+
+    @Test
+    void should_return_byte_array_of_image_base64() throws FileNotFoundException {
+        String id = "39c2f29e-c0f8-4a39-a98b-deed547d6aea";
+        when(repository.getAll()).thenReturn(of(getAll().collect(Collectors.toList())));
+        when(repository.getById(id)).thenReturn(getAll().findFirst());
+        var imageByteArray = queryService.getImageById(id);
+
+        assertThat(imageByteArray).isNotEmpty();
+    }
+
     private Stream<Feature> getAll() throws FileNotFoundException {
         Gson gson = new Gson();
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
