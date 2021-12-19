@@ -9,6 +9,7 @@ import com.up42.imagemetadata.domain.models.Feature;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GetFeaturesQueryService {
@@ -22,10 +23,11 @@ public class GetFeaturesQueryService {
     /**
      * Returns all the features.
      *
-     * @return a {@link List<Feature>}
+     * @return a {@link List<FeatureDTO>}
      */
-    public List<Feature> getFeatures() {
+    public List<FeatureDTO> getFeatures() {
         return featureRepository.getAll()
+                .map(this::mapToFeatureDTO)
                 .orElseThrow(() ->
                         new FeatureException(ErrorCode.FEATURE_NOT_FOUND, null, "There is not any feature!"));
     }
@@ -62,7 +64,7 @@ public class GetFeaturesQueryService {
     }
 
     /**
-     * Maps the a {@link Feature} to a {@link FeatureDTO}.
+     * Maps the {@link Feature} to a {@link FeatureDTO}.
      *
      * @param feature is a {@link Feature}.
      * @return a {@link FeatureDTO}
@@ -74,5 +76,15 @@ public class GetFeaturesQueryService {
                 .beginViewingDate(feature.getProperties().getAcquisition().getBeginViewingDate())
                 .endViewingDate(feature.getProperties().getAcquisition().getEndViewingDate())
                 .missionName(feature.getProperties().getAcquisition().getMissionName()).build();
+    }
+
+    /**
+     * Maps the {@link List<Feature>} to the {@link List<FeatureDTO>}.
+     *
+     * @param features is the {@link List<Feature>}.
+     * @return {@link List<FeatureDTO>}
+     */
+    private List<FeatureDTO> mapToFeatureDTO(List<Feature> features) {
+        return features.stream().map(this::mapToFeatureDTO).collect(Collectors.toList());
     }
 }

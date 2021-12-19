@@ -43,7 +43,7 @@ public class GetFeaturesQueryServiceTest {
     void should_returns_list_of_features() throws FileNotFoundException {
         Optional<List<Feature>> features = of(getAll().collect(Collectors.toList()));
         when(repository.getAll()).thenReturn(features);
-        List<Feature> featureList = queryService.getFeatures();
+        var featureList = queryService.getFeatures();
 
         assertThat(featureList.size()).isGreaterThan(0);
     }
