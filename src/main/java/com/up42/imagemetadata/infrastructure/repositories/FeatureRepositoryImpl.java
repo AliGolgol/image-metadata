@@ -19,4 +19,9 @@ public class FeatureRepositoryImpl implements FeatureRepository {
     public Optional<List<Feature>> getAll() {
         return Optional.empty();
     }
+
+    @Override
+    public Optional<Feature> getById(String id) {
+        return Optional.empty();
+    }
 }

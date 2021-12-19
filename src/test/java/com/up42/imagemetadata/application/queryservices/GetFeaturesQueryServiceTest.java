@@ -3,6 +3,7 @@ package com.up42.imagemetadata.application.queryservices;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.up42.imagemetadata.application.dtos.FeatureDTO;
 import com.up42.imagemetadata.domain.FeatureRepository;
 import com.up42.imagemetadata.domain.exceptions.FeatureException;
 import com.up42.imagemetadata.domain.models.Feature;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Optional.of;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -38,7 +40,7 @@ public class GetFeaturesQueryServiceTest {
 
     @Test
     void should_returns_list_of_features() throws FileNotFoundException {
-        Optional<List<Feature>> features = getAll();
+        Optional<List<Feature>> features = of(getAll().collect(Collectors.toList()));
         when(repository.getAll()).thenReturn(features);
         List<Feature> featureList = queryService.getFeatures();
 
@@ -56,13 +58,23 @@ public class GetFeaturesQueryServiceTest {
         assertThat(featureException.getMessage()).contains("There is not any feature!");
     }
 
-    private Optional<List<Feature>> getAll() throws FileNotFoundException {
+    @Test
+    void should_returns_feature_by_id() throws FileNotFoundException {
+        String id = "39c2f29e-c0f8-4a39-a98b-deed547d6aea";
+        when(repository.getAll()).thenReturn(of(getAll().collect(Collectors.toList())));
+        when(repository.getById(id)).thenReturn(getAll().findFirst());
+        var feature = queryService.getFeatureById(id);
+
+        assertThat(feature.getId()).isEqualTo(id);
+    }
+
+    private Stream<Feature> getAll() throws FileNotFoundException {
         Gson gson = new Gson();
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
         String geoJsonFile = Objects.requireNonNull(classloader.getResource("source-data.txt")).getFile();
         JsonElement geoJsonElements = JsonParser.parseReader(new FileReader(geoJsonFile));
         SourceData[] sourceData = gson.fromJson(geoJsonElements.toString(), SourceData[].class);
 
-        return of(Arrays.stream(sourceData).map(SourceData::getFeatures).flatMap(List::stream).collect(Collectors.toList()));
+        return Arrays.stream(sourceData).map(SourceData::getFeatures).flatMap(List::stream);
     }
 }

@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface FeatureRepository {
     Optional<List<Feature>> getAll();
+
+    Optional<Feature> getById(String id);
 }

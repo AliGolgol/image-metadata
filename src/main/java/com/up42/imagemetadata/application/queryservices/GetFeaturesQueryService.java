@@ -1,5 +1,6 @@
 package com.up42.imagemetadata.application.queryservices;
 
+import com.up42.imagemetadata.application.dtos.FeatureDTO;
 import com.up42.imagemetadata.domain.FeatureRepository;
 import com.up42.imagemetadata.domain.exceptions.ErrorCode;
 import com.up42.imagemetadata.domain.exceptions.FeatureException;
@@ -26,5 +27,35 @@ public class GetFeaturesQueryService {
         return featureRepository.getAll()
                 .orElseThrow(() ->
                         new FeatureException(ErrorCode.FEATURE_NOT_FOUND, null, "There is not any feature!"));
+    }
+
+    /**
+     * Returns a single representation of a feature.
+     *
+     * @param id is String
+     * @return a {@link FeatureDTO}
+     */
+    public FeatureDTO getFeatureById(String id) {
+        return getFeatures().stream()
+                .map(this::mapToFeatureDTO)
+                .filter(feature -> feature.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() ->
+                        new FeatureException(ErrorCode.FEATURE_NOT_FOUND, id, "The feature not found!"));
+    }
+
+    /**
+     * Maps the a {@link Feature} to a {@link FeatureDTO}.
+     *
+     * @param feature is a {@link Feature}.
+     * @return a {@link FeatureDTO}
+     */
+    private FeatureDTO mapToFeatureDTO(Feature feature) {
+        return FeatureDTO.builder()
+                .id(feature.getProperties().getId())
+                .timestamp(feature.getProperties().getTimestamp())
+                .beginViewingDate(feature.getProperties().getAcquisition().getBeginViewingDate())
+                .endViewingDate(feature.getProperties().getAcquisition().getEndViewingDate())
+                .missionName(feature.getProperties().getAcquisition().getMissionName()).build();
     }
 }

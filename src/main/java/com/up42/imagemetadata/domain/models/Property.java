@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 public class Property {
     private final String id;
+    private final long timestamp;
     private final Acquisition acquisition;
     private final String quicklook;
 }
