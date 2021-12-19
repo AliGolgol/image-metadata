@@ -1,0 +1,89 @@
+{
+	"info": {
+		"_postman_id": "111b9673-5299-4cd1-bcc1-e1fcc9eb7a34",
+		"name": "UP42",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get all Features",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8083/features",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"features"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Feature by Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8083/features/39c2f29e-c0f8-4a39-a98b-deed547d6aeb",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"features",
+						"39c2f29e-c0f8-4a39-a98b-deed547d6aeb"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Image by Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8083/features/cf5dbe37-ab95-4af1-97ad-2637aec4ddf0/quicklook",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"features",
+						"cf5dbe37-ab95-4af1-97ad-2637aec4ddf0",
+						"quicklook"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Feature by Wrong Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8083/features/cf5dbe37-ab95-4af1-97ad-2637aec4ddf1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"features",
+						"cf5dbe37-ab95-4af1-97ad-2637aec4ddf1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
