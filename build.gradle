@@ -26,6 +26,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.assertj:assertj-core:3.21.0'
     implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.5.13'
 }
 
 test {
