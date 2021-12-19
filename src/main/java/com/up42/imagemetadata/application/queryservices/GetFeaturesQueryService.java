@@ -39,6 +39,7 @@ public class GetFeaturesQueryService {
      * @return a {@link FeatureDTO}
      */
     public FeatureDTO getFeatureById(String id) {
+        validateId(id);
         return featureRepository.getById(id).stream()
                 .map(this::mapToFeatureDTO)
                 .filter(feature -> feature.getId().equals(id))
@@ -54,6 +55,7 @@ public class GetFeaturesQueryService {
      * @return a {@link Byte[]}
      */
     public byte[] getImageById(String id) {
+        validateId(id);
         Feature feature = featureRepository.getById(id).stream()
                 .filter(f -> f.getProperties().getId().equals(id))
                 .findFirst()
@@ -85,5 +87,16 @@ public class GetFeaturesQueryService {
      */
     private List<FeatureDTO> mapToFeatureDTO(List<Feature> features) {
         return features.stream().map(this::mapToFeatureDTO).collect(Collectors.toList());
+    }
+
+    /**
+     * Validates id.
+     *
+     * @param id is a String.
+     */
+    private void validateId(String id){
+        if (id == null || id.isBlank()){
+            throw new FeatureException(ErrorCode.INVALID_FEATURE_ID,id,"The id is not valid!");
+        }
     }
 }

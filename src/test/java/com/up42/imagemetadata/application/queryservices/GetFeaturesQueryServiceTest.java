@@ -91,6 +91,13 @@ public class GetFeaturesQueryServiceTest {
         assertThat(imageByteArray).isNotEmpty();
     }
 
+    @Test
+    void should_throws_FeatureException_when_the_id_is_not_valid() throws FileNotFoundException {
+        var featureException = assertThrows(FeatureException.class,
+                () -> queryService.getImageById(""),
+                "The id is not valid!");
+        assertThat(featureException.getMessage()).contains("The id is not valid!");
+    }
     private Stream<Feature> getAll() throws FileNotFoundException {
         Gson gson = new Gson();
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
