@@ -5,6 +5,7 @@ import com.up42.imagemetadata.domain.FeatureRepository;
 import com.up42.imagemetadata.domain.exceptions.ErrorCode;
 import com.up42.imagemetadata.domain.exceptions.FeatureException;
 import com.up42.imagemetadata.domain.models.Feature;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,7 +37,7 @@ public class GetFeaturesQueryService {
      * @return a {@link FeatureDTO}
      */
     public FeatureDTO getFeatureById(String id) {
-        return getFeatures().stream()
+        return featureRepository.getById(id).stream()
                 .map(this::mapToFeatureDTO)
                 .filter(feature -> feature.getId().equals(id))
                 .findFirst()

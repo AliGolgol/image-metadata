@@ -24,6 +24,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -68,6 +69,17 @@ public class GetFeaturesQueryServiceTest {
         assertThat(feature.getId()).isEqualTo(id);
     }
 
+    @Test
+    void should_trow_FeatureException_when_feature_not_found() throws FileNotFoundException {
+        String id = "39c2f29e-c0f8-4a39-a98b-deed547d6aea";
+        when(repository.getAll()).thenReturn(of(getAll().collect(Collectors.toList())));
+        when(repository.getById(id)).thenReturn(empty());
+
+        var featureException = assertThrows(FeatureException.class,
+                () -> queryService.getFeatureById(id),
+                "The feature not found!");
+        assertThat(featureException.getMessage()).contains("The feature not found!");
+    }
     private Stream<Feature> getAll() throws FileNotFoundException {
         Gson gson = new Gson();
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
