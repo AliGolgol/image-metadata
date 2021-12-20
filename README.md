@@ -18,7 +18,7 @@ I have used onion architecture.
 
 ### Running from docker
 
-- To run it use this command: ``sudo docker build -t image-metadata .``
+- To build it use this command: ``sudo docker build -t image-metadata .``
 - Then we run the docker image: ``sudo docker run -p 8083:8083 image-metadata``
 - The address of rest api is: ``http://loclahost:8083``
 - The address of swagger is: ``http://localhost:8083/swagger``
